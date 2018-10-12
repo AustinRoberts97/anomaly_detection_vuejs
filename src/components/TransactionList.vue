@@ -1,0 +1,282 @@
+/* es-lint disable */
+<template>
+    <div class="transactions">
+        <!--<div class="admin">
+            <h1>Admin</h1>
+                <div class="panel">
+                    <h2>Links</h2>
+                    <p><a href="">Member list</a></p>
+                    <p><a href="">Admin settings</a></p>
+                </div>
+        </div>
+        -->
+        <div class="accounts">
+            <h1>Account Summary</h1>
+            <!--
+            <div class="account">
+                <h2>Totally Green Checking (Balance: $764.23)</h2>
+                    <div class="table">
+                    <table class="tranTable">
+                        <thead class="top">
+                            <tr>
+                                <th style="width: 10em;" class="date">Date</th>
+                                <th style="width: 20em;">Acceptor</th>
+                                <th style="width: 70px;">State</th>
+                                <th style="width: 8em;">Post Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr v-for="transaction in transactions" @click="selectTransaction(transaction)" v-bind:key="transaction">
+                                <td class="date">{{ transaction.local_tran_date }}</td>
+                                <td>{{ transaction.card_acceptor_name }}</td>
+                                <td>{{ transaction.card_acceptor_state}}</td>
+                                <td>{{ transaction.post_amount}}</td>
+                            </tr>
+                        
+                            <tr class="anomaly">
+                                <td class="date">7/4/2018<img src="../assets/74841-200.png" width="17"></td>
+                                <td>WAL Wal-Mart Store</td>
+                                <td>KY</td>
+                                <td>50.00</td>
+                            </tr>
+                            <tr class="anomaly">
+                                <td class="date">7/4/2018<img src="../assets/74841-200.png" width="17"></td>
+                                <td>WAL Wal-Mart Store</td>
+                                <td>KY</td>
+                                <td>46.00</td>
+                            </tr>
+                            <tr>
+                                <td class="date">10/1/2018</td>
+                                <td>US MEIJER #209</td>
+                                <td>MI</td>
+                                <td>191.04</td>
+                            </tr>
+                            <tr>
+                                <td class="date">9/28/2018</td>
+                                <td>US SPEEDWAY 02234 N C</td>
+                                <td>MI</td>
+                                <td>34.68</td>
+                            </tr>
+                            <tr class="anom_recurring">
+                                <td class="date">9/27/2018<img src="../assets/question.png" width="13"></td>
+                                <td>COMCAST</td>
+                                <td>N/A</td>
+                                <td>67.36</td>
+                            </tr>
+                            <tr>
+                                <td class="date">9/27/2018</td>
+                                <td>US MEIJER #209</td>
+                                <td>MI</td>
+                                <td>26.82</td>
+                            </tr>
+                            <tr>
+                                <td class="date">9/27/2018</td>
+                                <td>US SPEEDWAY 02234 N C</td>
+                                <td>MI</td>
+                                <td>6.67</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <h3>Show more</h3>
+                </div>
+            </div>
+            -->
+            <div v-for="(account, index) in transactionLists" v-bind:key="index" class="account">
+                <h2>{{accountNames[index]}}</h2>
+                <div class="table">
+                    <table class="tranTable">
+                        <thead class="top">
+                            <tr>
+                                <th style="width: 10em;" class="date">Date</th>
+                                <th style="width: 20em;">Acceptor</th>
+                                <th style="width: 70px;">State</th>
+                                <th style="width: 8em;">Post Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr v-for="(transaction, index2) in account.slice(0, 5)" @click="selectTransaction(transaction)" v-bind:key="index2" v-bind:class="{anomaly: transaction.test_transaction_flag}">
+                                <td class="date">{{ transaction.local_tran_date }}</td>
+                                <td>{{ transaction.card_acceptor_name }}</td>
+                                <td>{{ transaction.card_acceptor_state}}</td>
+                                <td>{{ transaction.post_amount}}</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                    <h3 v-if="account.length > 5">Show more</h3>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</template>
+
+<script>
+import {APIService} from '../http/APIService';
+const apiService = new APIService();
+
+export default {
+    name: 'TransactionList',
+    data() {
+        return {
+            transactions: [],
+            selectedTransaction: null,
+            loading: false,
+            user: null,
+            transactionLists: [],
+            accountNames: ["Testing (Balance: $8,721.54)", "Checking (Balance: $843.29)", "Credit (Balance: $2,423)"]
+        };
+    },
+    methods: {
+        selectTransaction(transaction) {
+            console.log("click");
+            this.selectedTransaction = transaction;
+        },
+        getUser() {
+            this.loading = true;
+            console.log("getting user");
+            apiService.getUser(4).then((page) => {
+                this.user = page;
+                //console.log(page)
+                //console.log(this.user)
+                this.loading = false;
+                this.getUserTransactions();
+            });
+        },
+        getUserTransactions() {
+            // Called after user is pulled
+            // Will fill transaction list with transactions from user's list
+            this.loading = true;
+            console.log("Getting user's transactions")
+            apiService.getTransactions(this.user.account_number).then((page) => {
+                
+                // Transactions are sorted by processor account
+                // For each processor account, create list and add corresponding transactions
+                // Then add list to transactionLists 
+                var card_number = "1";
+                var tran_list = [];
+                for (var i = 0; i < page.length; i++) {
+                    var transaction = page[i];
+                    if (transaction.processor_account != card_number) {
+                        card_number = transaction.processor_account;
+                        this.transactionLists.push(tran_list);
+                        console.log(tran_list)
+                        tran_list = [];
+                    }
+                    if (transaction.processor_account == card_number) {
+                        tran_list.push(transaction);
+                    }
+
+                }
+                this.transactionLists.push(tran_list);
+                this.loading = false;
+                
+            })
+        }
+    },
+    mounted() {
+        this.getUser();
+    },
+}
+</script>
+
+<style>
+div.transactions {
+    align-content: center;
+    background-color: #ffffff;
+    padding-left: 2em;
+    min-height: 100em;
+    
+}
+div.admin {
+    max-width: 38em;
+    min-width: 10em;
+    float: right;
+    margin-left: 1em;
+    margin-right: 2.1em;
+    
+}
+div.admin a {
+    color: #003300;
+}
+div.panel {
+    text-align: left;
+    background-color: #cccccc;
+    border: solid 0.2em #474747;
+    margin-bottom: 2em;
+    padding-left: 1em;
+}
+div.accounts {
+    text-align: left;
+    float: left;
+    max-width: 38em;
+    min-width: 20em;
+    margin-right: 1em;
+
+}
+div.accounts h1 {
+    margin-left: 1em;
+
+}
+div.account {
+    background-color: #cccccc;
+    border: solid 0.2em #474747;
+    margin-bottom: 2em;
+}
+table.tranTable {
+    border: #ffffff;
+    border-collapse: separate;
+    border-spacing: 0 0.5em;
+}
+h1 {
+    margin-top: 0;
+    padding-top: 1em;
+}
+
+div.accounts h2 {
+    background-color: #cccccc;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 1em;
+    margin-bottom: 0;
+    margin-top: 0;
+
+}
+div.account h3 {
+    margin-bottom: 0;
+    margin-left: 1.4em;
+}
+table.tranTable td {
+    padding-top: 0.7em;
+    padding-bottom: 0.7em;
+    background-color: #efefef;
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+}
+table.tranTable th {
+    padding-top: 0.7em;
+    padding-bottom: 0.7em;
+    background-color: #ffffff;
+}
+.date {
+    padding-left: 1em;
+}
+tr.anomaly td img {
+    padding-top: 0em;
+    vertical-align: bottom;
+    margin-left: 1.5em;
+}
+tr.anomaly td {
+    background-color: rgb(221, 139, 138)
+}
+tr.anom_recurring td {
+    background-color:bisque;
+}
+tr.anom_recurring td img {
+    padding-top: 0em;
+    vertical-align: bottom;
+    margin-left: 1.1em;
+}
+</style>
