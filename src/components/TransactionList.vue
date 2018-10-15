@@ -96,7 +96,7 @@
                         </thead>
                         <tbody>
                             
-                            <tr v-for="(transaction, index2) in account.slice(0, 5)" @click="selectTransaction(transaction)" v-bind:key="index2" v-bind:class="{anomaly: transaction.test_transaction_flag}">
+                            <tr v-for="(transaction, index2) in account.slice(0, 10)" @click="selectTransaction(transaction)" v-bind:key="index2" v-bind:class="{anomaly: transaction.fraud_flag != '0'}">
                                 <td class="date">{{ transaction.local_tran_date }}</td>
                                 <td>{{ transaction.card_acceptor_name }}</td>
                                 <td>{{ transaction.card_acceptor_state}}</td>
@@ -126,7 +126,7 @@ export default {
             loading: false,
             user: null,
             transactionLists: [],
-            accountNames: ["Testing (Balance: $8,721.54)", "Checking (Balance: $843.29)", "Credit (Balance: $2,423)"]
+            accountNames: ["Debit Card #1 (Balance: $8,721.54)", "Debit Card #4888882272342082 (Balance: $843.29)", "Credit Card #4888889295027111 (Balance: $2,423)", "Debit Card #4888890000000000 (Balance: $1,146)"]
         };
     },
     methods: {
@@ -161,8 +161,9 @@ export default {
                     var transaction = page[i];
                     if (transaction.processor_account != card_number) {
                         card_number = transaction.processor_account;
-                        this.transactionLists.push(tran_list);
                         console.log(tran_list)
+                        this.transactionLists.push(tran_list);
+                        
                         tran_list = [];
                     }
                     if (transaction.processor_account == card_number) {
@@ -170,6 +171,7 @@ export default {
                     }
 
                 }
+                console.log(tran_list)
                 this.transactionLists.push(tran_list);
                 this.loading = false;
                 
