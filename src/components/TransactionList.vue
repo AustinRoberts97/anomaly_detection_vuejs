@@ -96,7 +96,7 @@
                         </thead>
                         <tbody>
                             
-                            <tr v-for="(transaction, index2) in account.slice(0, 10)" @click="selectTransaction(transaction)" v-bind:key="index2" v-bind:class="{anomaly: transaction.fraud_flag != '0'}">
+                            <tr v-for="(transaction, index2) in account.slice(0, 5)" @click="selectTransaction(transaction)" v-bind:key="index2" v-bind:class="{anomaly: transaction.fraud_flag != '0'}">
                                 <td class="date">{{ transaction.local_tran_date }}</td>
                                 <td>{{ transaction.card_acceptor_name }}</td>
                                 <td>{{ transaction.card_acceptor_state}}</td>
@@ -189,7 +189,7 @@ div.transactions {
     align-content: center;
     background-color: #ffffff;
     padding-left: 2em;
-    min-height: 100em;
+    min-height: 120em;
     
 }
 div.admin {
