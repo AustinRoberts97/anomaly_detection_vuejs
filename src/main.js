@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import jwt_decode from 'jwt-decode'
@@ -15,13 +16,21 @@ Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false
 
+
+
+
 // Define state and mutations in vuex store
+// Everything in state and local storage stored as JSON strings
+// Need to JSON.parse profile and token when accessing
 const store = new Vuex.Store({
   state: {
+    // User's username for pulling profile
     username: localStorage.getItem('username'),
+    // User's profile with attributes 'account' and 'id'
     profile: localStorage.getItem('profile'),
-    jwt_access: localStorage.getItem('access'),
-    jwt_refresh: localStorage.getItem('refresh'),
+    // User's JWT with attributes 'access' and 'refresh'
+    token: localStorage.getItem('token'),
+    // API endpoints for user authentication/pulling profile
     endpoints: {
       obtainJWT: 'http://127.0.0.1:8000/api/token/',
       refreshJWT: 'http://127.0.0.1:8000/api/token/refresh/',
@@ -29,58 +38,72 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
+    // Save new token in local storage and VUEX state
     updateToken(state, newToken) {
-      localStorage.setItem('access', newToken.access);
-      localStorage.setItem('refresh', newToken.refresh);
-      state.jwt_access = newToken.access;
-      state.jwt_refresh = newToken.refresh;
-      console.log("token updated " + newToken.access)
+      // Store token as JSON stringified object
+      localStorage.setItem('token', JSON.stringify(newToken));
+      // Save stringified in state
+      state.token = JSON.stringify(newToken);
+      console.log("token updated " + state.token.access);
     },
+    // Remove token from local storage and state
     removeToken(state) {
-      localStorage.removeItem('t');
-      state.jwt_access = null;
-      state.jwt_refresh = null;
+      localStorage.removeItem('token');
+      state.token = null;
+      console.log("token removed");
     },
+    // Save the username in local storage and state
     updateUsername(state, username) {
       localStorage.setItem('username', username);
       state.username = username;
     },
+    // Save the user's profile in local storage and state
+    // JSON string object
+    // must use JSON parse to access
     updateProfile(state, profile) {
-      localStorage.setItem('profile', profile);
-      state.profile = profile;
-      console.log(profile);
+      localStorage.setItem('profile', JSON.stringify(profile));
+      state.profile = JSON.stringify(profile);
     }
   },
   actions: {
+    // Logging in user. Use username and password and get jwt from api
     obtainToken(context, {username, password}) {
       const payload = {
         username: username,
         password: password
       }
-
+      // POST request to /api/token/ with username and password
       axios.post(this.state.endpoints.obtainJWT, payload).then((response) =>{
         console.log(response);
+        // Store the token in the VueX state and local store through updateToken
         this.commit('updateToken', {'access': response.data.access, 'refresh': response.data.refresh});
-        console.log("header " + authHeader().Authorization)
+        // Save username for pulling profile
         this.commit('updateUsername', username)
+        // Pull user profile to get account number
         this.dispatch('getProfile');
       }).catch((error)=>{
         console.log(error);
       })
     },
+    // Obtains new JWT when the access token has expired
     refreshToken() {
+      var token = JSON.parse(this.state.token);
       const payload = {
-        'refresh': this.state.jwt_refresh
+        'refresh': token.refresh
       }
-
+      // POST request to /api/token/refresh/ with refresh token
       axios.post(this.state.endpoints.refreshJWT, payload).then((response)=>{
         this.commit('updateToken', {'access': response.data.access, 'refresh': response.data.refresh});
       }).catch((error)=>{
         console.log(error);
       });
     },
+    // Looks at access token and checks if it has expired
+    // If expired, refresh token
+    // Will force login if refresh token is expired
     inspectToken() {
-      const token = this.state.jwt_access;
+      var jwt = JSON.parse(this.state.token);
+      const token = jwt.access;
       if(token){
         const decoded = jwt_decode(token);
         const exp = decoded.exp;
@@ -92,16 +115,20 @@ const store = new Vuex.Store({
           // Do nothing, do not refresh
         } else {
           // Prompt user to re-login, this covers condition where token is expired as well
+          
         }
       }
     },
+    // Gets user profile and saves it to state and local storage
     getProfile() {
       const username = this.state.username;
       if (username){
-        
+        // GET http request with username argument to /api/profiles/
         axios.get(this.state.endpoints.getUserProfile + username, {headers: authHeader()}).then((response)=>{
-          this.commit('updateProfile', response.data.profile);
-          console.log(response)
+          // Saves profile JSON string object in state and local storage
+          this.commit('updateProfile', {account: response.data[0].account, id: response.data[0].id});
+          // Move to transactions page
+          router.push('/transactions')
         }).catch((error)=>{
           console.log(error);
         });

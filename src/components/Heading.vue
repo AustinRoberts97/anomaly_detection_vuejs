@@ -3,7 +3,7 @@
         <div class="header">
             <img class="logo" src="../assets/msufcu_logo_white-01.svg" width="120" height="90">
             <div class="headTable">
-                <p class="images"><img src="../assets/messages.png"><img src="../assets/manage.png"><a class="button">Sign Out</a></p>
+                <p class="images"><img src="../assets/messages.png"><img src="../assets/manage.png"><router-link class="button" to="/">Sign Out</router-link></p>
                 <p class="captions"><span class="alertCaption">Alerts</span><span class="manageCaption">Manage</span></p>
             </div>
             <h3>Transaction and Anomaly Monitoring</h3>

@@ -11,7 +11,8 @@ export default {
   name: 'Accounts',
   components: {
     TransactionList, Heading
-  }
+  },
+  
 }
 </script>
 <style>

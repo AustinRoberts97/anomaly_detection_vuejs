@@ -150,7 +150,9 @@ export default {
             // Will fill transaction list with transactions from user's list
             this.loading = true;
             console.log("Getting user's transactions")
-            apiService.getTransactions(this.user.account_number).then((page) => {
+            var profile = JSON.parse(this.$store.state.profile);
+            console.log(profile);
+            apiService.getTransactions(profile.account).then((page) => {
                 
                 // Transactions are sorted by processor account
                 // For each processor account, create list and add corresponding transactions
@@ -179,7 +181,16 @@ export default {
         }
     },
     mounted() {
-        this.getUser();
+        if (!this.$store.state.token) {
+            this.$router.push('/');
+        } else {
+            this.$store.dispatch('inspectToken').then(() => {
+                console.log('inspected token');
+
+                this.getUserTransactions();
+            })
+        }
+        
     },
 }
 </script>
