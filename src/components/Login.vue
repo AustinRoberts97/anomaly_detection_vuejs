@@ -72,11 +72,9 @@ export default {
 <style>
 div.content {
   max-width: 60em;
-  text-align: center;
+  text-align: left;
   margin-left: auto;
   margin-right: auto;
 }
-input[type="text"],[type="password"] {
-  margin-left: 1em;
-}
+
 </style>
