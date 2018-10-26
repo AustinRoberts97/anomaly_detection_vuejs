@@ -96,7 +96,7 @@
                         </thead>
                         <tbody>
                             
-                            <tr v-for="(transaction, index2) in account.slice(0, 5)" @click="selectTransaction(transaction)" v-bind:key="index2" v-bind:class="{anomaly: transaction.fraud_flag != '0'}">
+                            <tr v-for="(transaction, index2) in account" v-if="index2 < listLengths[index]" @click="selectTransaction(transaction)" v-bind:key="index2" v-bind:class="{anomaly: transaction.fraud_flag != '0'}">
                                 <td class="date">{{ transaction.local_tran_date }}</td>
                                 <td>{{ transaction.card_acceptor_name }}</td>
                                 <td>{{ transaction.card_acceptor_state}}</td>
@@ -105,22 +105,39 @@
                             
                         </tbody>
                     </table>
-                    <h3 v-if="account.length > 5">Show more</h3>
+                    <p v-if="account.length > 5"><button v-if="account.length > listLengths[index]" @click="showMore(index)" class="show">Show more</button>
+                    <button class="show" v-if="listLengths[index] > 5" @click="showLess(index)">Show less</button></p>
                 </div>
             </div>
         </div>
+        <Transaction v-show="showModal" @close="showModal = false" v-if="this.selectedTransaction != null">
+            <h3 slot="header">Transaction</h3>
+            <div slot="body">
+                <p>Date: {{this.selectedTransaction.local_tran_date}}</p>
+                <p>Acceptor: {{this.selectedTransaction.card_acceptor_name}}</p>
+                <p>Location: {{this.selectedTransaction.card_acceptor_street}}, {{this.selectedTransaction.card_acceptor_city}}, {{this.selectedTransaction.card_acceptor_state}}</p>
+                <p>Amount: ${{this.selectedTransaction.post_amount}}</p>
+                <p>Fraudulent: {{this.selectedTransaction.fraud_flag}}</p>
+            </div>
+        </Transaction>
         
     </div>
 </template>
 
 <script>
+import Transaction from '@/components/Transaction'
 import {APIService} from '../http/APIService';
 const apiService = new APIService();
 
 export default {
     name: 'TransactionList',
+    components: {
+        Transaction,
+    },
     data() {
         return {
+            listLengths: [],
+            showModal: false,
             transactions: [],
             selectedTransaction: null,
             loading: false,
@@ -133,6 +150,7 @@ export default {
         selectTransaction(transaction) {
             console.log("click");
             this.selectedTransaction = transaction;
+            this.showModal = true;
         },
         getUser() {
             this.loading = true;
@@ -175,9 +193,25 @@ export default {
                 }
                 console.log(tran_list)
                 this.transactionLists.push(tran_list);
+
+                // For each transaction list, set their default list length to 5
+                var that = this;
+                this.transactionLists.forEach(function(transactionList) {
+                    that.listLengths.push(2);
+                });
+                console.log(this.listLengths);
                 this.loading = false;
                 
             })
+        },
+        showMore(index) {
+            this.listLengths[index] += 5;
+            console.log("show more on index " + index);
+            this.$forceUpdate();
+        },
+        showLess(index) {
+            this.listLengths[index] -= 5;
+            this.$forceUpdate();
         }
     },
     mounted() {
@@ -257,9 +291,16 @@ div.accounts h2 {
     margin-top: 0;
 
 }
-div.account h3 {
+div.account button.show {
     margin-bottom: 0;
     margin-left: 1.4em;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 1.1em;
+}
+div.account button.show:hover {
+    color:#003300;
 }
 table.tranTable td {
     padding-top: 0.7em;
