@@ -215,14 +215,10 @@ export default {
         }
     },
     mounted() {
-        if (!this.$store.state.token) {
+        if (!this.$store.state.profile) {
             this.$router.push('/');
         } else {
-            this.$store.dispatch('inspectToken').then(() => {
-                console.log('inspected token');
-
-                this.getUserTransactions();
-            })
+            this.getUserTransactions();
         }
         
     },

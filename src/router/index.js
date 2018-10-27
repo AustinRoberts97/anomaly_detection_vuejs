@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Admin from '@/components/Admin'
 import Accounts from '@/components/Accounts'
 import Login from '@/components/Login'
 
@@ -17,6 +17,11 @@ export default new Router({
       path: '/transactions/',
       name: 'Accounts',
       component: Accounts
+    },
+    {
+      path: '/admin/',
+      name: 'Admin',
+      component: Admin
     }
   ]
 })

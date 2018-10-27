@@ -33,6 +33,7 @@ export default {
         'username': this.username,
         'password': this.password
       }
+      /** 
       // POST request to /api/token/ with username and password
       axios.post(this.$store.state.endpoints.obtainJWT, args).then((response) =>{
         console.log(response);
@@ -56,6 +57,25 @@ export default {
         this.message = "Login failed";
         this.$refs.username.focus();
       });
+      */
+      this.$store.commit('updateUsername', this.username);
+      axios.get(this.$store.state.endpoints.getUserProfile + this.username, {headers: {}}).then((response)=>{
+          // Saves profile JSON string object in state and local storage
+          this.$store.commit('updateProfile', {account: response.data[0].account, id: response.data[0].id, admin: response.data[0].admin});
+          // If user is an admin, push to the admin page
+          // If not, push to the transactions page
+          if (response.data[0].admin) {
+            this.$router.push('/admin/')
+          } else {
+            this.$router.push('/transactions')
+          }
+      }).catch((error)=>{
+          console.log("Login failed");
+          this.clearFields();
+          this.message = "Login failed";
+          this.$refs.username.focus();
+      });
+
     },
     clearFields() {
       this.username = "";

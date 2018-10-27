@@ -10,12 +10,12 @@ import Heading from './components/Heading.vue'
 import Accounts from './components/Accounts.vue'
 import Login from './components/Login.vue'
 import Transaction from './components/Transaction.vue'
-
+import Admin from './components/Admin.vue'
 
 export default {
   name: 'App',
   components: {
-    Accounts, TransactionList, Heading, Login, Transaction
+    Accounts, TransactionList, Heading, Login, Transaction, Admin
   }
 }
 </script>
