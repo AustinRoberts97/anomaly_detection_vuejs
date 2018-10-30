@@ -33,5 +33,13 @@ export class APIService{
         return axios.get(url, {headers: {}}).then(response => response.data);
     }
 
+    setTransactionFraudFlag(id, new_flag) {
+        const url = `${API_URL}/api/transactions/${id}/`;
+        const args = {
+            "fraud_flag": new_flag
+        }
+        return axios.patch(url, args).then(response => response.data);
+    }
+
     /* The other methods go here */
 }

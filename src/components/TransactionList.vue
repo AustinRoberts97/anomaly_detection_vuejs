@@ -1,15 +1,6 @@
 /* es-lint disable */
 <template>
     <div class="transactions">
-        <div class="admin">
-            <h1>Admin</h1>
-                <div class="panel">
-                    <h2>Links</h2>
-                    <p><a href="">Member list</a></p>
-                    <p><a href="">Admin settings</a></p>
-                </div>
-        </div>
-        
         <div class="accounts">
             <h1>Account Summary</h1>
             <!--

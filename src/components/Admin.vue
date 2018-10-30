@@ -87,6 +87,7 @@ export default {
             this.$router.push('/');
         } else {
             this.getAdminTransactions();
+            
         }
         
     }
