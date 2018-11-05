@@ -134,7 +134,7 @@ export default {
             loading: false,
             user: null,
             transactionLists: [],
-            accountNames: ["Debit Card #1 (Balance: $8,721.54)", "Debit Card #4888882272342082 (Balance: $843.29)", "Credit Card #4888889295027111 (Balance: $2,423)", "Debit Card #4888890000000000 (Balance: $1,146)"]
+            accountNames: ["Debit Card #4888882272342082 (Balance: $843.29)", "Credit Card #4888889295027111 (Balance: $2,423)", "Debit Card #4888890000000000 (Balance: $1,146)"]
         };
     },
     methods: {
@@ -170,6 +170,9 @@ export default {
                 var tran_list = [];
                 for (var i = 0; i < page.length; i++) {
                     var transaction = page[i];
+                    if (i == 0) {
+                        card_number = transaction.processor_account;
+                    }
                     if (transaction.processor_account != card_number) {
                         card_number = transaction.processor_account;
                         console.log(tran_list)
@@ -188,7 +191,7 @@ export default {
                 // For each transaction list, set their default list length to 5
                 var that = this;
                 this.transactionLists.forEach(function(transactionList) {
-                    that.listLengths.push(2);
+                    that.listLengths.push(5);
                 });
                 console.log(this.listLengths);
                 this.loading = false;

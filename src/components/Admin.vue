@@ -1,8 +1,8 @@
 <template>
     <div class="content">
         <heading/>
-        <h3>Administration</h3>
         <div class="transactions">
+            <h1>Administration</h1>
             <div class="table">
                 <table class="tranTable">
                     <thead class="top">
