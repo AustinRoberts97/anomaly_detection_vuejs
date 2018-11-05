@@ -107,7 +107,7 @@ export default {
 
   .modal-footer {
     border-top: 1px solid #eeeeee;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   .modal-body {
@@ -130,5 +130,12 @@ export default {
     background: #4AAE9B;
     border: 1px solid #4AAE9B;
     border-radius: 2px;
+  }
+  .lbtn-green {
+    color: white;
+    background: #4AAE9B;
+    border: 1px solid #4AAE9B;
+    border-radius: 2px;
+    margin: auto;
   }
 </style>

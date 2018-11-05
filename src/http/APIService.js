@@ -41,5 +41,10 @@ export class APIService{
         return axios.patch(url, args).then(response => response.data);
     }
 
+    getSimilarTransactions(id) {
+        const url = `${API_URL}/api/similar_transactions/?id=${id}`;
+        return axios.get(url, {headers: {}}).then(response => response.data);
+    }
+
     /* The other methods go here */
 }
