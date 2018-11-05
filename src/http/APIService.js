@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authHeader } from '../_helpers/'
-const API_URL = 'http://localhost:8000';
-//const API_URL = 'http://django-env.zqqwi3vey2.us-east-1.elasticbeanstalk.com';
+//const API_URL = 'http://localhost:8000';
+const API_URL = 'http://django-env.zqqwi3vey2.us-east-1.elasticbeanstalk.com';
 
 export class APIService{
     constructor(){

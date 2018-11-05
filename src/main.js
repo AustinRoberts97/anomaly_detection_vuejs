@@ -32,9 +32,9 @@ const store = new Vuex.Store({
     token: localStorage.getItem('token'),
     // API endpoints for user authentication/pulling profile
     endpoints: {
-      obtainJWT: 'http://127.0.0.1:8000/api/token/',
-      refreshJWT: 'http://127.0.0.1:8000/api/token/refresh/',
-      getUserProfile: 'http://127.0.0.1:8000/api/profiles/?username='
+      obtainJWT: 'http://django-env.zqqwi3vey2.us-east-1.elasticbeanstalk.com/api/token/',
+      refreshJWT: 'http://django-env.zqqwi3vey2.us-east-1.elasticbeanstalk.com/api/token/refresh/',
+      getUserProfile: 'http://django-env.zqqwi3vey2.us-east-1.elasticbeanstalk.com/api/profiles/?username='
     }
   },
   mutations: {
