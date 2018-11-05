@@ -153,6 +153,8 @@ export default {
         },
         close() {
             this.showModal = false;
+            this.similarView = false;
+            this.similarTransactions = []
         },
         flagFraud() {
             console.log('flag fraud');
@@ -184,6 +186,7 @@ export default {
         },
         backSimilar() {
             this.similarView = false;
+            this.similarTransactions = [];
         }
     },
     mounted() {
