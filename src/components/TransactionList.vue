@@ -340,10 +340,10 @@ tr.anomaly td img {
     vertical-align: bottom;
     margin-left: 1.5em;
 }
-tr.anomaly td {
+tr.fraud td {
     background-color: rgb(221, 139, 138)
 }
-tr.anom_recurring td {
+tr.anomaly td {
     background-color:bisque;
 }
 tr.anom_recurring td img {
