@@ -87,7 +87,7 @@
                         </thead>
                         <tbody>
                             
-                            <tr v-for="(transaction, index2) in account" v-if="index2 < listLengths[index]" @click="selectTransaction(transaction)" v-bind:key="index2" v-bind:class="{anomaly: transaction.fraud_flag != '0'}">
+                            <tr v-for="(transaction, index2) in account" v-if="index2 < listLengths[index]" @click="selectTransaction(transaction)" v-bind:key="index2" v-bind:class="{anomaly: transaction.fraud_flag == '1', fraud: transaction.fraud_flag == '3'}">
                                 <td class="date">{{ transaction.local_tran_date }}</td>
                                 <td>{{ transaction.card_acceptor_name }}</td>
                                 <td>{{ transaction.card_acceptor_state}}</td>
@@ -109,6 +109,24 @@
                 <p>Location: {{this.selectedTransaction.card_acceptor_street}}, {{this.selectedTransaction.card_acceptor_city}}, {{this.selectedTransaction.card_acceptor_state}}</p>
                 <p>Amount: ${{this.selectedTransaction.post_amount}}</p>
                 <p>Fraudulent: {{this.selectedTransaction.fraud_flag}}</p>
+            </div>
+            <div slot="footer">
+                <button
+                    type="button"
+                    class="btn-green"
+                    @click="reportFraud"
+                    aria-label="Report fraud"
+                >
+                Report Fraud
+                </button>
+                <button
+                    type="button"
+                    class="btn-green"
+                    @click="close"
+                    aria-label="Close modal"
+                >
+                Close
+                </button>
             </div>
         </Transaction>
         
@@ -206,6 +224,16 @@ export default {
         showLess(index) {
             this.listLengths[index] -= 5;
             this.$forceUpdate();
+        },
+        close() {
+            this.showModal = false;
+        },
+        reportFraud() {
+            console.log('report fraud');
+            console.log(this.selectedTransaction.id);
+            apiService.setTransactionFraudFlag(this.selectedTransaction.id, 2).then((page) => {
+                this.getUserTransactions();
+            });
         }
     },
     mounted() {

@@ -159,7 +159,7 @@ export default {
         flagFraud() {
             console.log('flag fraud');
             console.log(this.selectedTransaction.id);
-            apiService.setTransactionFraudFlag(this.selectedTransaction.id, 2).then((page) => {
+            apiService.setTransactionFraudFlag(this.selectedTransaction.id, 3).then((page) => {
                 apiService.getAdminTransactions().then((page) => {
                     this.transactions = [];
                     for (var i = 0; i < page.length; i++) {
