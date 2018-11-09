@@ -108,7 +108,6 @@
                 <p>Acceptor: {{this.selectedTransaction.card_acceptor_name}}</p>
                 <p>Location: {{this.selectedTransaction.card_acceptor_street}}, {{this.selectedTransaction.card_acceptor_city}}, {{this.selectedTransaction.card_acceptor_state}}</p>
                 <p>Amount: ${{this.selectedTransaction.post_amount}}</p>
-                <p>Fraudulent: {{this.selectedTransaction.fraud_flag}}</p>
             </div>
             <div slot="footer">
                 <button
@@ -152,7 +151,7 @@ export default {
             loading: false,
             user: null,
             transactionLists: [],
-            accountNames: ["Debit Card #4888882272342082 (Balance: $843.29)", "Credit Card #4888889295027111 (Balance: $2,423)", "Debit Card #4888890000000000 (Balance: $1,146)"]
+            accountNames: ["Debit Card (Balance: $843.29)", "Credit Card (Balance: $2,423)", "Debit Card (Balance: $1,146)"]
         };
     },
     methods: {

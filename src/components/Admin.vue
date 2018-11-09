@@ -33,7 +33,6 @@
                 <p>Acceptor: {{this.selectedTransaction.card_acceptor_name}}</p>
                 <p>Location: {{this.selectedTransaction.card_acceptor_street}}, {{this.selectedTransaction.card_acceptor_city}}, {{this.selectedTransaction.card_acceptor_state}}</p>
                 <p>Amount: ${{this.selectedTransaction.post_amount}}</p>
-                <p>Fraudulent: {{this.selectedTransaction.fraud_flag}}</p>
             </div>
             <div slot="body" v-if="similarView" class="simView">
                 <table class="tranTable">
