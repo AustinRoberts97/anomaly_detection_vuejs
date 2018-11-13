@@ -76,6 +76,14 @@
                 <button
                     type="button"
                     class="btn-green"
+                    @click="flagNormal"
+                    aria-label="Flag normal"
+                >
+                Flag as normal
+                </button>
+                <button
+                    type="button"
+                    class="btn-green"
                     @click="close"
                     aria-label="Close modal"
                 >
@@ -98,6 +106,14 @@
                     aria-label="Flag fraud"
                 >
                 Flag as fraud
+                </button>
+                <button
+                    type="button"
+                    class="btn-green"
+                    @click="flagNormal"
+                    aria-label="Flag normal"
+                >
+                Flag as normal
                 </button>
                 <button
                     type="button"
@@ -167,6 +183,23 @@ export default {
                         this.transactions.push(transaction);
                     }
                     console.log(this.transactions);
+
+                    this.loading = false;
+                    });
+            })
+        },
+        flagNormal() {
+            console.log('flag normal');
+            console.log(this.selectedTransaction.id);
+            apiService.setTransactionFraudFlag(this.selectedTransaction.id, 0).then((page) => {
+                apiService.getAdminTransactions().then((page) => {
+                    this.transactions = [];
+                    for (var i = 0; i < page.length; i++) {
+                        var transaction = page[i];
+                        this.transactions.push(transaction);
+                    }
+                    console.log(this.transactions);
+                    this.showModal = false;
 
                     this.loading = false;
                     });
