@@ -299,7 +299,12 @@ h1 {
     margin-top: 0;
     padding-top: 1em;
 }
-
+table.tranTable tr.fraud td {
+    background-color: rgb(221, 139, 138)
+}
+table.tranTable tr.anomaly td {
+    background-color:bisque;
+}
 div.accounts h2 {
     background-color: #cccccc;
     padding-top: 1em;
@@ -335,16 +340,11 @@ table.tranTable th {
 .date {
     padding-left: 1em;
 }
+
 tr.anomaly td img {
     padding-top: 0em;
     vertical-align: bottom;
     margin-left: 1.5em;
-}
-tr.fraud td {
-    background-color: rgb(221, 139, 138)
-}
-tr.anomaly td {
-    background-color:bisque;
 }
 tr.anom_recurring td img {
     padding-top: 0em;
