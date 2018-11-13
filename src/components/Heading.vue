@@ -21,7 +21,7 @@
                     <tbody>
                         <tr v-for="(alert, index) in alerts" v-bind:key="index" class="alert">
                             <td>{{alert.message}}</td>
-                            <td>{{alert.date}}</td>
+                            <td>{{alert.date.slice(0, 10)}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -77,8 +77,8 @@ export default {
         getAlerts() {
             var profile = JSON.parse(this.$store.state.profile);
             apiService.getAlerts(profile.account).then((page) => {
-                console.log(page);
                 this.alerts = page;
+
             });
         },
         clearAlerts() {
@@ -86,6 +86,8 @@ export default {
             apiService.clearAlerts(profile.account).then((page) => {
                 console.log(page);
                 this.closeAlertDialog();
+                this.getAlerts();
+                this.$forceUpdate();
                 
             });
         },
