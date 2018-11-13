@@ -26,6 +26,7 @@
             </div>
         </div>
 
+
         <Transaction v-show="showModal" @close="showModal = false" v-if="this.selectedTransaction != null" class="dialog"> 
             <h3 slot="header">Transaction</h3>
             <div slot="body" v-if="!similarView">
