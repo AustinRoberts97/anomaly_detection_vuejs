@@ -46,5 +46,15 @@ export class APIService{
         return axios.get(url, {headers: {}}).then(response => response.data);
     }
 
+    getAlerts(account) {
+        const url = `${API_URL}/api/alerts/?account=${account}`;
+        return axios.get(url, {headers: {}}).then(response => response.data);
+    }
+
+    clearAlerts(account) {
+        const url = `${API_URL}/api/clear_alerts/?account=${account}`;
+        return axios.get(url, {headers: {}}).then(response => response.data);
+    }
+
     /* The other methods go here */
 }
