@@ -19,7 +19,7 @@
                             <td class="date">{{ transaction.local_tran_date }}</td>
                             <td>{{ transaction.card_acceptor_name }}</td>
                             <td>{{ transaction.card_acceptor_state}}</td>
-                            <td>{{ transaction.post_amount}}</td>
+                            <td>{{ parseFloat(transaction.post_amount).toFixed(2)}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -33,7 +33,7 @@
                 <p>Date: {{this.selectedTransaction.local_tran_date}}</p>
                 <p>Acceptor: {{this.selectedTransaction.card_acceptor_name}}</p>
                 <p>Location: {{this.selectedTransaction.card_acceptor_street}}, {{this.selectedTransaction.card_acceptor_city}}, {{this.selectedTransaction.card_acceptor_state}}</p>
-                <p>Amount: ${{this.selectedTransaction.post_amount}}</p>
+                <p>Amount: ${{parseFloat(transaction.post_amount).toFixed(2)}}</p>
             </div>
             <div slot="body" v-if="similarView" class="simView">
                 <table class="tranTable">
@@ -51,7 +51,7 @@
                             <td class="date">{{ transaction.local_tran_date }}</td>
                             <td>{{ transaction.card_acceptor_name }}</td>
                             <td>{{ transaction.card_acceptor_state}}</td>
-                            <td>{{ transaction.post_amount}}</td>
+                            <td>{{ parseFloat(transaction.post_amount).toFixed(2)}}</td>
                         </tr>
                     </tbody>
                 </table>
