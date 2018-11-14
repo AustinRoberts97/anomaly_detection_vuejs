@@ -107,7 +107,7 @@
                 <p>Date: {{this.selectedTransaction.local_tran_date}}</p>
                 <p>Acceptor: {{this.selectedTransaction.card_acceptor_name}}</p>
                 <p>Location: {{this.selectedTransaction.card_acceptor_street}}, {{this.selectedTransaction.card_acceptor_city}}, {{this.selectedTransaction.card_acceptor_state}}</p>
-                <p>Amount: ${{parseFloat(transaction.post_amount).toFixed(2)}}</p>
+                <p>Amount: {{parseFloat(this.selectedTransaction.post_amount).toFixed(2)}}</p>
             </div>
             <div slot="footer">
                 <button

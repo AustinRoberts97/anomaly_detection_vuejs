@@ -14,7 +14,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(transaction, index) in transactions"  @click="selectTransaction(transaction)" 
+                        <tr v-for="(transaction, index) in transactions"  @click="selectTransaction(transaction)"
                         v-bind:key="index" class="transaction">
                             <td class="date">{{ transaction.local_tran_date }}</td>
                             <td>{{ transaction.card_acceptor_name }}</td>
@@ -33,7 +33,7 @@
                 <p>Date: {{this.selectedTransaction.local_tran_date}}</p>
                 <p>Acceptor: {{this.selectedTransaction.card_acceptor_name}}</p>
                 <p>Location: {{this.selectedTransaction.card_acceptor_street}}, {{this.selectedTransaction.card_acceptor_city}}, {{this.selectedTransaction.card_acceptor_state}}</p>
-                <p>Amount: ${{parseFloat(transaction.post_amount).toFixed(2)}}</p>
+                <p>Amount: ${{parseFloat(this.selectedTransaction.post_amount).toFixed(2)}}</p>
             </div>
             <div slot="body" v-if="similarView" class="simView">
                 <table class="tranTable">
