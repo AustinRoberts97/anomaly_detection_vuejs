@@ -12,6 +12,10 @@ export default {
   components: {
     TransactionList, Heading
   },
+  data: {
+    account: null,
+    
+  }
   
 }
 </script>

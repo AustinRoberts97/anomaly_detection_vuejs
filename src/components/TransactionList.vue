@@ -239,7 +239,9 @@ export default {
         if (!this.$store.state.profile) {
             this.$router.push('/');
         } else {
+            
             this.getUserTransactions();
+            
         }
         
     },
