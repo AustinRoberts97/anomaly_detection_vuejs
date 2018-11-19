@@ -113,6 +113,14 @@
                 <button
                     type="button"
                     class="btn-green"
+                    @click="flagNormal"
+                    aria-label="Flag normal"
+                >
+                Flag Normal
+                </button>
+                <button
+                    type="button"
+                    class="btn-green"
                     @click="reportFraud"
                     aria-label="Report fraud"
                 >
@@ -178,6 +186,7 @@ export default {
             console.log("Getting user's transactions")
             var profile = JSON.parse(this.$store.state.profile);
             console.log(profile);
+            
             apiService.getTransactions(profile.account).then((page) => {
                 
                 // Transactions are sorted by processor account
@@ -213,7 +222,49 @@ export default {
                 console.log(this.listLengths);
                 this.loading = false;
                 
-            })
+            });
+        },
+        resetTransactions() {
+            this.transactionLists = [];
+            this.transactions = [];
+            this.selectedTransaction = null;
+
+            this.loading = true;
+            console.log("Getting user's transactions")
+            var profile = JSON.parse(this.$store.state.profile);
+            console.log(profile);
+            
+            apiService.getTransactions(profile.account).then((page) => {
+                
+                // Transactions are sorted by processor account
+                // For each processor account, create list and add corresponding transactions
+                // Then add list to transactionLists 
+                var card_number = "1";
+                var tran_list = [];
+                for (var i = 0; i < page.length; i++) {
+                    var transaction = page[i];
+                    if (i == 0) {
+                        card_number = transaction.processor_account;
+                    }
+                    if (transaction.processor_account != card_number) {
+                        card_number = transaction.processor_account;
+                        console.log(tran_list)
+                        this.transactionLists.push(tran_list);
+                        
+                        tran_list = [];
+                    }
+                    if (transaction.processor_account == card_number) {
+                        tran_list.push(transaction);
+                    }
+
+                }
+                console.log(tran_list)
+                this.transactionLists.push(tran_list);
+
+                console.log(this.listLengths);
+                this.loading = false;
+                
+            });
         },
         showMore(index) {
             this.listLengths[index] += 5;
@@ -226,6 +277,7 @@ export default {
         },
         close() {
             this.showModal = false;
+            this.$forceUpdate();
         },
         reportFraud() {
             console.log('report fraud');
@@ -233,6 +285,15 @@ export default {
             apiService.setTransactionFraudFlag(this.selectedTransaction.id, 2).then((page) => {
                 this.getUserTransactions();
             });
+        },
+        flagNormal() {
+            console.log("flag normal");
+            console.log(this.selectedTransaction.id);
+            apiService.setTransactionFraudFlag(this.selectedTransaction.id, 0).then((page) =>{
+                this.close();
+                this.resetTransactions();
+                this.$forceUpdate();
+            })
         }
     },
     mounted() {
