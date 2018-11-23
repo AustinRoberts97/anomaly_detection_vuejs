@@ -21,7 +21,7 @@ export default {
 </script>
 <style>
 div.content {
-  max-width: 60em;
+  max-width: 65em;
   text-align: center;
   margin-left: auto;
   margin-right: auto;

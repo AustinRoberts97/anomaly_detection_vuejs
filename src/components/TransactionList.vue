@@ -101,6 +101,14 @@
                 </div>
             </div>
         </div>
+        <div class="admin">
+            <h1>Top Retailers</h1>
+            <div class="panel">
+                <ol>
+                    <li v-for="(retailer, index) in retailers" v-bind:key="index">{{ retailer.name }} ({{ parseFloat(retailer.transactions_sum).toFixed(2)}})</li>
+                </ol>
+            </div>
+        </div>
         <Transaction v-show="showModal" @close="showModal = false" v-if="this.selectedTransaction != null">
             <h3 slot="header">Transaction</h3>
             <div slot="body">
@@ -159,7 +167,8 @@ export default {
             loading: false,
             user: null,
             transactionLists: [],
-            accountNames: ["Debit Card (Balance: $843.29)", "Credit Card (Balance: $2,423)", "Debit Card (Balance: $1,146)"]
+            accountNames: ["Debit Card (Balance: $843.29)", "Credit Card (Balance: $2,423)", "Debit Card (Balance: $1,146)"],
+            retailers: []
         };
     },
     methods: {
@@ -294,6 +303,24 @@ export default {
                 this.resetTransactions();
                 this.$forceUpdate();
             })
+        },
+        getRetailers() {
+            this.loading = true;
+            console.log("Getting user's top retailers")
+            var profile = JSON.parse(this.$store.state.profile);
+            console.log(profile);
+
+            apiService.getRetailers(profile.account).then((page) => {
+                this.retailers = [];
+                for (var i = 0; i < page.length; i++) {
+                    if (i < 5) {
+                        var retailer = page[i];
+                        this.retailers.push(retailer);
+                    }
+                    
+                }
+                console.log(this.retailers);
+            })
         }
     },
     mounted() {
@@ -302,6 +329,7 @@ export default {
         } else {
             
             this.getUserTransactions();
+            this.getRetailers();
             
         }
         
@@ -334,7 +362,7 @@ div.panel {
     background-color: #cccccc;
     border: solid 0.2em #474747;
     margin-bottom: 2em;
-    padding-left: 1em;
+    /* #padding-left: 1em; */
 }
 div.accounts {
     text-align: left;

@@ -56,5 +56,10 @@ export class APIService{
         return axios.get(url, {headers: {}}).then(response => response.data);
     }
 
+    getRetailers(account) {
+        const url = `${API_URL}/api/retailers/?account=${account}`;
+        return axios.get(url, {headers: {}}).then(response => response.data);
+    }
+
     /* The other methods go here */
 }
