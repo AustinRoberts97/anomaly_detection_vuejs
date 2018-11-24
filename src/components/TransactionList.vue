@@ -347,7 +347,7 @@ div.transactions {
     
 }
 div.admin {
-    max-width: 38em;
+    max-width: 40em;
     min-width: 10em;
     float: right;
     margin-left: 1em;
@@ -362,7 +362,10 @@ div.panel {
     background-color: #cccccc;
     border: solid 0.2em #474747;
     margin-bottom: 2em;
-    /* #padding-left: 1em; */
+    padding-right: 1em; 
+}
+div.panel li {
+    margin-bottom: 1em;
 }
 div.accounts {
     text-align: left;
