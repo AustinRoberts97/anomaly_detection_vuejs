@@ -114,7 +114,7 @@
             <div slot="body">
                 <p>Date: {{this.selectedTransaction.local_tran_date}}</p>
                 <p>Acceptor: {{this.selectedTransaction.card_acceptor_name}}</p>
-                <p>Location: {{this.selectedTransaction.card_acceptor_street}}, {{this.selectedTransaction.card_acceptor_city}}, {{this.selectedTransaction.card_acceptor_state}}</p>
+                <p>Location: {{this.selectedTransaction.card_acceptor_street}}, {{this.selectedTransaction.card_acceptor_city}}, {{this.selectedTransaction.card_acceptor_state}}, {{this.selectedTransaction.card_acceptor_country}}</p>
                 <p>Amount: {{parseFloat(this.selectedTransaction.post_amount).toFixed(2)}}</p>
             </div>
             <div slot="footer">
