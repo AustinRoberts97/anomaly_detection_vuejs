@@ -129,6 +129,8 @@
     </div>
 </template>
 <script>
+// Admin portal page
+
 import Heading from '@/components/Heading'
 import Transaction from '@/components/Transaction'
 import { APIService } from '../http/APIService';
@@ -149,6 +151,7 @@ export default {
         }
     },
     methods: {
+        // Uses the admin API call and stores the transactions in memory to display them
         getAdminTransactions() {
             this.loading = true;
             console.log("getting admin transactions")
@@ -162,16 +165,19 @@ export default {
                 this.loading = false;
             });
         },
+        // Selects a specific transaction when clicked and opens the dialog box
         selectTransaction(transaction) {
             console.log("click");
             this.selectedTransaction = transaction;
             this.showModal = true;
         },
+        // Close the dialog box
         close() {
             this.showModal = false;
             this.similarView = false;
             this.similarTransactions = []
         },
+        // Uses the setTransactionFraudFlag API call to change a transactions flag to 3 for fraud
         flagFraud() {
             console.log('flag fraud');
             console.log(this.selectedTransaction.id);
@@ -188,6 +194,7 @@ export default {
                     });
             })
         },
+        // Sets transaction fraud flag to 0 for normal
         flagNormal() {
             console.log('flag normal');
             console.log(this.selectedTransaction.id);
@@ -205,6 +212,7 @@ export default {
                     });
             })
         },
+        // Uses similar transactions api call to get transactions with the same retailer.
         viewSimilar() {
             console.log('view similar');
             apiService.getSimilarTransactions(this.selectedTransaction.id).then((page) => {
@@ -223,11 +231,13 @@ export default {
         }
     },
     mounted() {
+        // Return to login if a profile isn't loaded
         if (!this.$store.state.profile) {
             this.$router.push('/');
         }
         var profile = JSON.parse(this.$store.state.profile);
         console.log(profile);
+        // Make sure the user is an admin, return to login if not
         if (!profile.admin) {
             this.$router.push('/');
         } else {

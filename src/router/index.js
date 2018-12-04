@@ -5,7 +5,7 @@ import Accounts from '@/components/Accounts'
 import Login from '@/components/Login'
 
 Vue.use(Router)
-
+// URL routing for each page of the web app
 export default new Router({
   routes: [
     {

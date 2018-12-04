@@ -16,7 +16,7 @@ Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false
 
-
+// JSON web tokens are no longer being used on this project.
 
 
 // Define state and mutations in vuex store

@@ -50,6 +50,8 @@
 </template>
 
 <script>
+// Heading component with alerts and sign out functionality
+
 import {APIService} from '../http/APIService';
 import Transaction from '@/components/Transaction'
 const apiService = new APIService();
@@ -69,11 +71,13 @@ export default {
         
     },
     methods: {
+        // Displays alert dialog
         showAlerts() {
             this.showAlertDialog = true;
             console.log("show alerts");
             console.log(this.showAlertDialog);
         },
+        // Get's user's alerts through API call
         getAlerts() {
             var profile = JSON.parse(this.$store.state.profile);
             apiService.getAlerts(profile.account).then((page) => {
@@ -81,6 +85,7 @@ export default {
 
             });
         },
+        // Clears a user's alerts through the API
         clearAlerts() {
             var profile = JSON.parse(this.$store.state.profile);
             apiService.clearAlerts(profile.account).then((page) => {

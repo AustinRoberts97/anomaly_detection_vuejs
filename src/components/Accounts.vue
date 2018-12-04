@@ -5,6 +5,8 @@
     </div>
 </template>
 <script>
+
+// Main account page for the member portal
 import TransactionList from '@/components/TransactionList'
 import Heading from '@/components/Heading'
 export default {
